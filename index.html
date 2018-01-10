@@ -258,6 +258,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/01/08/流量控制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Robin Han">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿妙不可言">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/08/流量控制/" itemprop="url">流量控制</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-08T16:55:41+08:00">
+                2018-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/08/流量控制/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/08/流量控制/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>无论是整个系统，还是系统的各个模块，都有自己的负载承受能力。最直观的从系统层面来说，我们往往会提到这个系统能够承载的 TPS 是多少，这个 TPS 也一般作为系统提供服务能力的体现。若 TPS 超过了系统能够承载的上限，系统就可能出现 SLA 不满足客户需求，甚至于即使之后 TPS 下降到低于 TPS上限，系统仍不能恢复正常的情况。因此对系统服务访问的限流是至关重要的，通过控制访问系统的 TPS，从而达到保护系统的目的。本文将会介绍一些常见的限流算法。</p>
+<h2 id="算法介绍"><a href="#算法介绍" class="headerlink" title="算法介绍"></a>算法介绍</h2><h3 id="滑动窗口算法"><a href="#滑动窗口算法" class="headerlink" title="滑动窗口算法"></a>滑动窗口算法</h3><p>我们最初可能是从 TCP 网络协议接触到滑动窗口（<a href="https://en.wikipedia.org/wiki/Sliding_window_protocol" target="_blank" rel="noopener">Sliding Window</a>）。在 TCP 网络协议中，滑动窗口里面的槽位放置的可以发送但还没有发送成功的 segment。下面要介绍的滑动窗口限流算法，虽然形式上看起来和 TCP 中的滑动窗口略有相似，实际本质上有很大的不同。</p>
+<p>以图为例，滑动窗口限流算法的槽位（Sliding Cell）对应的是时间段和该时间段的请求次数，例如图中第一个槽位代表的就是时间段 0.0s~0.1s 和这个时间段内的请求次数。假设当前时间是 1.0s，想得知最近一秒钟的 tps，就可以通过将 0.0s~1.0s之间的所有槽位的计数器相加来计算。当时间过去 0.1s ，滑动窗口整体向后移动一个槽位，0.1~1.1s之间的槽位计数器总和即最近一秒钟 tps。以此类推。</p>
+<p>不难看出滑动窗口的精度与在滑动窗口中分割的槽位的个数有很大的关系，槽位个数越多，滑动窗口限流越精确，移动更加平滑，当槽位个数退化为一个的时候，滑动窗口限流退化成计数器法限流。</p>
+<img src="/2018/01/08/流量控制/sliding_window.png" title="Sliding Window">
+<script src="https://gist.github.com/superhx/304b77c503d39c948c028e70db28efd8.js"></script>
+
+<h3 id="漏斗桶算法"><a href="#漏斗桶算法" class="headerlink" title="漏斗桶算法"></a>漏斗桶算法</h3><p>漏斗桶算法有<a href="https://en.wikipedia.org/wiki/Leaky_bucket" target="_blank" rel="noopener">两种理解方式</a>，一种是作为度量器（meter），一种是作为队列（queue）。两种理解方式的基础都是漏桶，所以下面先介绍漏桶的原理，再介绍两种理解方式的差别。</p>
+<p>如下图所示，每次请求都会将水滴带入到水中。当水桶仍然能够装下水滴时，允许执行后续的业务逻辑；当水桶已满，后续的水滴就会溢出来，拒绝执行后续的业务逻辑。与此同时，水桶下面有个孔洞，以恒定的速率不断往下滴水，给水桶腾挪出容量。（有点像小学的水池同时蓄水和防水的题目 2333）</p>
+<img src="/2018/01/08/流量控制/leaky_bucket.png" title="Leaky Bucket">
+<h4 id="度量器-Meter"><a href="#度量器-Meter" class="headerlink" title="度量器 Meter"></a>度量器 Meter</h4><p>漏斗桶算法从度量器来理解，和前面介绍的滑动窗口算法类似、是后面要介绍的令牌桶算法的镜像算法（一个是判断桶还有没有容量、一个是判断桶里面有没有令牌，一个是恒定速率漏水、一个是恒定速率增加令牌）。从程序执行的角度来看，当成功往桶里加水（允许执行），就代表后续的业务逻辑可以立即执行了（同步），起到了限流的作用。</p>
+<script src="https://gist.github.com/superhx/6c66f5ebb9f8bdb848a3937ba1306424.js"></script>
+
+<h4 id="队列-Queue"><a href="#队列-Queue" class="headerlink" title="队列 Queue"></a>队列 Queue</h4><p>漏斗桶算法从队列来理解，限流的原理是和度量器类似的，不同的地方在于，后续业务逻辑的执行。当成功往桶里加水，后续的业务逻辑（task）被放到队列中，以先进先出、恒定的速率异步的执行。因此相比度量器的方式，队列的方式除了能够限流以外，还多了整流的功能。请求的速率是不均匀的，不可预测的，通过这种的方式，可以将请求整流成可预测、恒定的速率来执行。</p>
+<script src="https://gist.github.com/superhx/a62ec632cd5c5b1881e7514f06733026.js"></script>
+
+<h3 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h3><p>令牌桶算法和漏桶的度量器实现比较类似。请求需要从桶中获取令牌，有令牌才能执行后续的业务逻辑。令牌以恒定的速率往桶里填充，当桶满时，令牌溢出。</p>
+<img src="/2018/01/08/流量控制/token_bucket.png" title="Token Bucket">
+<script src="https://gist.github.com/superhx/f2dc8f6c1c13593ac5573f235885e21f.js"></script>
+
+<h3 id="其他相关实现"><a href="#其他相关实现" class="headerlink" title="其他相关实现"></a>其他相关实现</h3><p><a href="https://google.github.io/guava/releases/19.0/api/docs/index.html?com/google/common/util/concurrent/RateLimiter.html" target="_blank" rel="noopener">Guava RateLimiter</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2016/09/01/Java-Concurrency-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -886,7 +1037,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -908,7 +1059,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -955,7 +1106,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
