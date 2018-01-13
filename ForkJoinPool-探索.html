@@ -79,13 +79,17 @@
 
 
 
+<meta name="description" content="1234ForkJoinPool#runWorker workerthread执行逻辑每一种任务获取都传递进了种子#scan to steal 任务 from other workqueue#awaitWork 等待自己队列里的任务 1Very often, the lack of tasks is transient due to GC or OS scheduling 1On most pla">
 <meta property="og:type" content="website">
-<meta property="og:title" content="猿妙不可言">
-<meta property="og:url" content="http://superhx.github.io/tags/Library/index.html">
+<meta property="og:title" content="ForkJoinPool 探索">
+<meta property="og:url" content="http://superhx.github.io/ForkJoinPool-探索.html">
 <meta property="og:site_name" content="猿妙不可言">
+<meta property="og:description" content="1234ForkJoinPool#runWorker workerthread执行逻辑每一种任务获取都传递进了种子#scan to steal 任务 from other workqueue#awaitWork 等待自己队列里的任务 1Very often, the lack of tasks is transient due to GC or OS scheduling 1On most pla">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-01-10T09:13:35.809Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="猿妙不可言">
+<meta name="twitter:title" content="ForkJoinPool 探索">
+<meta name="twitter:description" content="1234ForkJoinPool#runWorker workerthread执行逻辑每一种任务获取都传递进了种子#scan to steal 任务 from other workqueue#awaitWork 等待自己队列里的任务 1Very often, the lack of tasks is transient due to GC or OS scheduling 1On most pla">
 
 
 
@@ -115,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://superhx.github.io/tags/Library/"/>
+  <link rel="canonical" href="http://superhx.github.io/ForkJoinPool-探索.html"/>
 
 
 
 
 
-  <title>Tag: Library | 猿妙不可言</title>
+  <title>ForkJoinPool 探索 | 猿妙不可言</title>
   
 
 
@@ -149,7 +153,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -243,54 +247,39 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h2>Library<small>Tag</small>
-        </h2>
-      </div>
+	<h2 class="post-title" itemprop="name headline">ForkJoinPool 探索</h2>
+
+
+
+</header>
 
       
+      
+      
+      <div class="post-body">
         
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
         
-            <a class="post-title-link" href="/2016/09/01/Java-Concurrency-2/" itemprop="url">
-              
-                <span itemprop="name">Java Concurrency [2]</span>
-              
-            </a>
-        
-      </h3>
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ForkJoinPool#runWorker workerthread执行逻辑</span><br><span class="line">每一种任务获取都传递进了种子</span><br><span class="line">#scan to steal 任务 from other workqueue</span><br><span class="line">#awaitWork 等待自己队列里的任务</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Very often, the lack of tasks is transient due to GC or OS scheduling</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">On most platforms, signalling (unpark) overhead time is noticeably long, and the time between signalling a thread and it actually making progress can be very noticeably long</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-09-01T16:46:14+08:00"
-              content="2016-09-01" >
-          09-01
-        </time>
+        
       </div>
-
-    </header>
-  </article>
-
-
+      
+      
       
     </div>
-
+    
+    
+    
   </div>
-  
-  
-  
-
-  
 
 
           </div>
@@ -298,6 +287,17 @@
 
 
           
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
 
         </div>
         
@@ -513,6 +513,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
@@ -530,6 +534,18 @@
       <script id="dsq-count-scr" src="https://blogrobinhan.disqus.com/count.js" async></script>
     
 
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://superhx.github.io/ForkJoinPool-探索.html';
+          this.page.identifier = 'ForkJoinPool-探索.html';
+          this.page.title = 'ForkJoinPool 探索';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://blogrobinhan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
     
 
   

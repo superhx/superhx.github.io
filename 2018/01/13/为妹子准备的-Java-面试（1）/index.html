@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,面试," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前期基础准备正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，Thi">
+<meta name="keywords" content="Java,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为妹子准备的 Java 面试（1）">
+<meta property="og:url" content="http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/index.html">
+<meta property="og:site_name" content="猿妙不可言">
+<meta property="og:description" content="前期基础准备正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，Thi">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-01-13T08:37:20.492Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="为妹子准备的 Java 面试（1）">
+<meta name="twitter:description" content="前期基础准备正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，Thi">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/"/>
+
+
+
+
+
+  <title>为妹子准备的 Java 面试（1） | 猿妙不可言</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-57494403-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">猿妙不可言</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Robin Han">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿妙不可言">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">为妹子准备的 Java 面试（1）</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-13T15:37:09+08:00">
+                2018-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/13/为妹子准备的-Java-面试（1）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/13/为妹子准备的-Java-面试（1）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前期基础准备"><a href="#前期基础准备" class="headerlink" title="前期基础准备"></a>前期基础准备</h2><p>正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，<strong>Think In Java</strong>、<strong>Java Concurrency In Practice</strong>（或 Java 并发编程艺术），看完这两本可以回头刷一下  <a href="https://docs.oracle.com/javase/tutorial/" target="_blank" rel="noopener">Java tutorial</a> 的<strong>Learning the Java Language</strong>、<strong>Essential Java Classes</strong>这两章，看一下是不是都掌握了。最后把<strong>深入理解 Java 虚拟机</strong>看了，前期的基础准备就大功告成了。</p>
+<h2 id="自问自答环节"><a href="#自问自答环节" class="headerlink" title="自问自答环节"></a>自问自答环节</h2><p>这部分是对之前看书成果的一个检验，有些问题是面试的过程中碰到的，有些问题是自己看书的时候忽然产生的疑问或者之前知识点遗漏的地方。</p>
+<p>3 。。。2。。1。Start</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><h5 id="public、protected、no-modifier、private-四种-modifier的access-layer有什么区别？介绍一下-Java-9-的模块化。"><a href="#public、protected、no-modifier、private-四种-modifier的access-layer有什么区别？介绍一下-Java-9-的模块化。" class="headerlink" title="public、protected、no modifier、private 四种 modifier的access layer有什么区别？介绍一下 Java 9 的模块化。"></a>public、protected、no modifier、private 四种 modifier的access layer有什么区别？介绍一下 Java 9 的模块化。</h5><h5 id="重载-overload-和重写-override-的区别。"><a href="#重载-overload-和重写-override-的区别。" class="headerlink" title="重载 overload 和重写 override 的区别。"></a>重载 overload 和重写 override 的区别。</h5><h5 id="下面这段代码是否有错？若有错，为什么？"><a href="#下面这段代码是否有错？若有错，为什么？" class="headerlink" title="下面这段代码是否有错？若有错，为什么？"></a>下面这段代码是否有错？若有错，为什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Main &#123;</span><br><span class="line">	int getResult() &#123; return 0; &#125;</span><br><span class="line">	double getResult() &#123; return 0.0; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"><a href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？" class="headerlink" title="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"></a>下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Main &#123;</span><br><span class="line">	int sum(List&lt;Integer&gt; intList) &#123; return 0; &#125;</span><br><span class="line">	double sum(List&lt;Double&gt; doubleList) &#123; return 0.0; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-1"><a href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-1" class="headerlink" title="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"></a>下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Foo&lt;T extends Double&gt; &#123;</span><br><span class="line"> 	public void set(T t) &#123; System.out.println(&quot;Set Foo&quot;); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bar&lt;T extends Integer&gt; extends Foo&#123;</span><br><span class="line"> 	public void set(T t) &#123; System.out.println(&quot;Set Bar&quot;); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">Bar&lt;Integer&gt; bar = new Bar&lt;&gt;();</span><br><span class="line">bar.set(1);</span><br><span class="line">bar.set(1.0);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h5 id="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-2"><a href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-2" class="headerlink" title="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"></a>下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Foo&lt;T&gt; &#123;</span><br><span class="line">	public void set(T t) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bar extends Foo&lt;Integer&gt; &#123;</span><br><span class="line"> 	public void set(Integer t) &#123;&#125;</span><br><span class="line"> 	public void set(Object t) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/08/流量控制/" rel="next" title="流量控制">
+                <i class="fa fa-chevron-left"></i> 流量控制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Robin Han</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">categories</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/superhx" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前期基础准备"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x524D;&#x671F;&#x57FA;&#x7840;&#x51C6;&#x5907;" class="headerlink" title="&#x524D;&#x671F;&#x57FA;&#x7840;&#x51C6;&#x5907;"></a>&#x524D;&#x671F;&#x57FA;&#x7840;&#x51C6;&#x5907;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自问自答环节"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x81EA;&#x95EE;&#x81EA;&#x7B54;&#x73AF;&#x8282;" class="headerlink" title="&#x81EA;&#x95EE;&#x81EA;&#x7B54;&#x73AF;&#x8282;"></a>&#x81EA;&#x95EE;&#x81EA;&#x7B54;&#x73AF;&#x8282;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#语法"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x8BED;&#x6CD5;" class="headerlink" title="&#x8BED;&#x6CD5;"></a>&#x8BED;&#x6CD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#public、protected、no-modifier、private-四种-modifier的access-layer有什么区别？介绍一下-Java-9-的模块化。"><span class="nav-number">2.1.0.1.</span> <span class="nav-text"><a href="#public&#x3001;protected&#x3001;no-modifier&#x3001;private-&#x56DB;&#x79CD;-modifier&#x7684;access-layer&#x6709;&#x4EC0;&#x4E48;&#x533A;&#x522B;&#xFF1F;&#x4ECB;&#x7ECD;&#x4E00;&#x4E0B;-Java-9-&#x7684;&#x6A21;&#x5757;&#x5316;&#x3002;" class="headerlink" title="public&#x3001;protected&#x3001;no modifier&#x3001;private &#x56DB;&#x79CD; modifier&#x7684;access layer&#x6709;&#x4EC0;&#x4E48;&#x533A;&#x522B;&#xFF1F;&#x4ECB;&#x7ECD;&#x4E00;&#x4E0B; Java 9 &#x7684;&#x6A21;&#x5757;&#x5316;&#x3002;"></a>public&#x3001;protected&#x3001;no modifier&#x3001;private &#x56DB;&#x79CD; modifier&#x7684;access layer&#x6709;&#x4EC0;&#x4E48;&#x533A;&#x522B;&#xFF1F;&#x4ECB;&#x7ECD;&#x4E00;&#x4E0B; Java 9 &#x7684;&#x6A21;&#x5757;&#x5316;&#x3002;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#重载-overload-和重写-override-的区别。"><span class="nav-number">2.1.0.2.</span> <span class="nav-text"><a href="#&#x91CD;&#x8F7D;-overload-&#x548C;&#x91CD;&#x5199;-override-&#x7684;&#x533A;&#x522B;&#x3002;" class="headerlink" title="&#x91CD;&#x8F7D; overload &#x548C;&#x91CD;&#x5199; override &#x7684;&#x533A;&#x522B;&#x3002;"></a>&#x91CD;&#x8F7D; overload &#x548C;&#x91CD;&#x5199; override &#x7684;&#x533A;&#x522B;&#x3002;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下面这段代码是否有错？若有错，为什么？"><span class="nav-number">2.1.0.3.</span> <span class="nav-text"><a href="#&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;" class="headerlink" title="&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;"></a>&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"><span class="nav-number">2.1.0.4.</span> <span class="nav-text"><a href="#&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;" class="headerlink" title="&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;"></a>&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-1"><span class="nav-number">2.1.0.5.</span> <span class="nav-text"><a href="#&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;-1" class="headerlink" title="&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;"></a>&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-2"><span class="nav-number">2.1.0.6.</span> <span class="nav-text"><a href="#&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;-2" class="headerlink" title="&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;"></a>&#x4E0B;&#x9762;&#x8FD9;&#x6BB5;&#x4EE3;&#x7801;&#x662F;&#x5426;&#x6709;&#x9519;&#xFF1F;&#x82E5;&#x6709;&#x9519;&#xFF0C;&#x4E3A;&#x4EC0;&#x4E48;&#xFF1F;&#x987A;&#x4FBF;&#x8FD8;&#x53EF;&#x4EE5;&#x601D;&#x8003;&#x7F16;&#x8BD1;&#x65F6;&#x53D1;&#x751F;&#x4E86;&#x4EC0;&#x4E48;&#xFF1F;</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Robin Han</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+  
+  <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://blogrobinhan.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/';
+          this.page.identifier = '2018/01/13/为妹子准备的-Java-面试（1）/';
+          this.page.title = '为妹子准备的 Java 面试（1）';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://blogrobinhan.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

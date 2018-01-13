@@ -258,6 +258,143 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Robin Han">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿妙不可言">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/13/为妹子准备的-Java-面试（1）/" itemprop="url">为妹子准备的 Java 面试（1）</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-13T15:37:09+08:00">
+                2018-01-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/13/为妹子准备的-Java-面试（1）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/13/为妹子准备的-Java-面试（1）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前期基础准备"><a href="#前期基础准备" class="headerlink" title="前期基础准备"></a>前期基础准备</h2><p>正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，<strong>Think In Java</strong>、<strong>Java Concurrency In Practice</strong>（或 Java 并发编程艺术），看完这两本可以回头刷一下  <a href="https://docs.oracle.com/javase/tutorial/" target="_blank" rel="noopener">Java tutorial</a> 的<strong>Learning the Java Language</strong>、<strong>Essential Java Classes</strong>这两章，看一下是不是都掌握了。最后把<strong>深入理解 Java 虚拟机</strong>看了，前期的基础准备就大功告成了。</p>
+<h2 id="自问自答环节"><a href="#自问自答环节" class="headerlink" title="自问自答环节"></a>自问自答环节</h2><p>这部分是对之前看书成果的一个检验，有些问题是面试的过程中碰到的，有些问题是自己看书的时候忽然产生的疑问或者之前知识点遗漏的地方。</p>
+<p>3 。。。2。。1。Start</p>
+<h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><h5 id="public、protected、no-modifier、private-四种-modifier的access-layer有什么区别？介绍一下-Java-9-的模块化。"><a href="#public、protected、no-modifier、private-四种-modifier的access-layer有什么区别？介绍一下-Java-9-的模块化。" class="headerlink" title="public、protected、no modifier、private 四种 modifier的access layer有什么区别？介绍一下 Java 9 的模块化。"></a>public、protected、no modifier、private 四种 modifier的access layer有什么区别？介绍一下 Java 9 的模块化。</h5><h5 id="重载-overload-和重写-override-的区别。"><a href="#重载-overload-和重写-override-的区别。" class="headerlink" title="重载 overload 和重写 override 的区别。"></a>重载 overload 和重写 override 的区别。</h5><h5 id="下面这段代码是否有错？若有错，为什么？"><a href="#下面这段代码是否有错？若有错，为什么？" class="headerlink" title="下面这段代码是否有错？若有错，为什么？"></a>下面这段代码是否有错？若有错，为什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Main &#123;</span><br><span class="line">	int getResult() &#123; return 0; &#125;</span><br><span class="line">	double getResult() &#123; return 0.0; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"><a href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？" class="headerlink" title="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"></a>下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Main &#123;</span><br><span class="line">	int sum(List&lt;Integer&gt; intList) &#123; return 0; &#125;</span><br><span class="line">	double sum(List&lt;Double&gt; doubleList) &#123; return 0.0; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-1"><a href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-1" class="headerlink" title="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"></a>下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class Foo&lt;T extends Double&gt; &#123;</span><br><span class="line"> 	public void set(T t) &#123; System.out.println(&quot;Set Foo&quot;); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bar&lt;T extends Integer&gt; extends Foo&#123;</span><br><span class="line"> 	public void set(T t) &#123; System.out.println(&quot;Set Bar&quot;); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line">Bar&lt;Integer&gt; bar = new Bar&lt;&gt;();</span><br><span class="line">bar.set(1);</span><br><span class="line">bar.set(1.0);</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h5 id="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-2"><a href="#下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？-2" class="headerlink" title="下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？"></a>下面这段代码是否有错？若有错，为什么？顺便还可以思考编译时发生了什么？</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Foo&lt;T&gt; &#123;</span><br><span class="line">	public void set(T t) &#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Bar extends Foo&lt;Integer&gt; &#123;</span><br><span class="line"> 	public void set(Integer t) &#123;&#125;</span><br><span class="line"> 	public void set(Object t) &#123;&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/01/08/流量控制/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1037,7 +1174,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1059,7 +1196,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
