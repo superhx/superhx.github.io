@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="面试,Java," />
+  <meta name="keywords" content="Java,面试," />
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="前期基础准备正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，Thi">
-<meta name="keywords" content="面试,Java">
+<meta name="keywords" content="Java,面试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="为妹子准备的 Java 面试（1）">
 <meta property="og:url" content="http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/index.html">
 <meta property="og:site_name" content="猿妙不可言">
 <meta property="og:description" content="前期基础准备正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，Thi">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-01-18T11:20:50.576Z">
+<meta property="og:updated_time" content="2018-01-18T11:23:44.408Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="为妹子准备的 Java 面试（1）">
 <meta name="twitter:description" content="前期基础准备正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和 JVM 5个部分组成。这么多东西初看未免觉得无从下手，摸不着方向，觉得看不完（对，Amy Xia 同学说的就是你）。与其自己去摸索，不如直接使用大神的贤者之石。呃，其实就是看书看书看书（这么多经典的书不看，放着夹叶子嘛）。大概有这么几本书可以推荐，Thi">
@@ -346,7 +346,7 @@
 <h3 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h3><p><strong>public、protected、no modifier、private 四种 modifier的access layer有什么区别？介绍一下 Java 9 的模块化。</strong></p>
 <p><strong>重载 overload 和重写 override 的区别。</strong></p>
 <p><strong><code>List&lt;?&gt;</code> 和 <code>List&lt;Object&gt;</code> 的异同是什么？各自的使用场景？</strong></p>
-<p><strong><code>List&lt;? extends Foo&gt;</code>和 <code>List&lt;Foo super ?&gt;</code>的异同是什么？各自的使用场景？</strong></p>
+<p><strong><code>List&lt;? extends Foo&gt;</code>和 <code>List&lt;? super Foo&gt;</code>的异同是什么？各自的使用场景？</strong></p>
 <p><strong>下面这段代码输出是什么？顺便思考子类对象的内存结构。</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">	<span class="keyword">public</span> String str = <span class="string">"Foo"</span>;</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="title">Foo</span><span class="params">()</span> </span>&#123; say(); &#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123; System.out.println(<span class="string">"Call method in Foo with str value:"</span> + str); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bar</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">public</span> String str = <span class="string">"Bar"</span>;</span><br><span class="line">  	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">say</span><span class="params">()</span> </span>&#123; System.out.println(<span class="string">"Call method in Bar with str value:"</span> + str); &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"><span class="comment">// in main</span></span><br><span class="line">Foo obj = <span class="keyword">new</span> Bar();</span><br><span class="line">System.out.println(<span class="string">"Str value: "</span> + obj.str);</span><br><span class="line">obj.say();</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p><strong>下面这段代码是否有错？若有错，为什么？</strong></p>
@@ -376,9 +376,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/面试/" rel="tag"># 面试</a>
-          
             <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
           
         </div>
       
