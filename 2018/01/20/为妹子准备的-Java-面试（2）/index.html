@@ -68,12 +68,10 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="数据结构,面试," />
 
 
 
-
-  
 
 
   <link rel="alternate" href="/atom.xml" title="猿妙不可言" type="application/atom+xml" />
@@ -83,17 +81,18 @@
 
 
 
-<meta name="description" content="1234ForkJoinPool#runWorker workerthread执行逻辑每一种任务获取都传递进了种子#scan to steal 任务 from other workqueue#awaitWork 等待自己队列里的任务 1Very often, the lack of tasks is transient due to GC or OS scheduling 1On most pla">
-<meta property="og:type" content="website">
-<meta property="og:title" content="ForkJoinPool 探索">
-<meta property="og:url" content="http://superhx.github.io/ForkJoinPool-探索.html">
+<meta name="description" content="开场白 参与人：啥都不知道 Amy Xia  参考书籍：数据结构（用面向对象方法与C++语言描述） 其他参考资料：网上“冲浪”搜寻来的博客 本篇目标：希望啥都不懂的 Amy Xia 根据问题自我学习自己筛选，希望以找到答案为目的的快速查阅  自问自答链表顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。">
+<meta name="keywords" content="数据结构,面试">
+<meta property="og:type" content="article">
+<meta property="og:title" content="为妹子准备的 Java 面试（2）">
+<meta property="og:url" content="http://superhx.github.io/2018/01/20/为妹子准备的-Java-面试（2）/index.html">
 <meta property="og:site_name" content="猿妙不可言">
-<meta property="og:description" content="1234ForkJoinPool#runWorker workerthread执行逻辑每一种任务获取都传递进了种子#scan to steal 任务 from other workqueue#awaitWork 等待自己队列里的任务 1Very often, the lack of tasks is transient due to GC or OS scheduling 1On most pla">
+<meta property="og:description" content="开场白 参与人：啥都不知道 Amy Xia  参考书籍：数据结构（用面向对象方法与C++语言描述） 其他参考资料：网上“冲浪”搜寻来的博客 本篇目标：希望啥都不懂的 Amy Xia 根据问题自我学习自己筛选，希望以找到答案为目的的快速查阅  自问自答链表顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2018-03-14T07:22:05.840Z">
+<meta property="og:updated_time" content="2018-03-12T10:49:29.897Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ForkJoinPool 探索">
-<meta name="twitter:description" content="1234ForkJoinPool#runWorker workerthread执行逻辑每一种任务获取都传递进了种子#scan to steal 任务 from other workqueue#awaitWork 等待自己队列里的任务 1Very often, the lack of tasks is transient due to GC or OS scheduling 1On most pla">
+<meta name="twitter:title" content="为妹子准备的 Java 面试（2）">
+<meta name="twitter:description" content="开场白 参与人：啥都不知道 Amy Xia  参考书籍：数据结构（用面向对象方法与C++语言描述） 其他参考资料：网上“冲浪”搜寻来的博客 本篇目标：希望啥都不懂的 Amy Xia 根据问题自我学习自己筛选，希望以找到答案为目的的快速查阅  自问自答链表顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。">
 
 
 
@@ -123,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://superhx.github.io/ForkJoinPool-探索.html"/>
+  <link rel="canonical" href="http://superhx.github.io/2018/01/20/为妹子准备的-Java-面试（2）/"/>
 
 
 
 
 
-  <title>ForkJoinPool 探索 | 猿妙不可言</title>
+  <title>为妹子准备的 Java 面试（2） | 猿妙不可言</title>
   
 
 
@@ -253,37 +252,162 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/01/20/为妹子准备的-Java-面试（2）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Robin Han">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿妙不可言">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h2 class="post-title" itemprop="name headline">ForkJoinPool 探索</h2>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ForkJoinPool#runWorker workerthread执行逻辑</span><br><span class="line">每一种任务获取都传递进了种子</span><br><span class="line">#scan to steal 任务 from other workqueue</span><br><span class="line">#awaitWork 等待自己队列里的任务</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Very often, the lack of tasks is transient due to GC or OS scheduling</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">On most platforms, signalling (unpark) overhead time is noticeably long, and the time between signalling a thread and it actually making progress can be very noticeably long</span><br></pre></td></tr></table></figure>
-<p>Forkjoinpool dojoin</p>
-
+          <h2 class="post-title" itemprop="name headline">为妹子准备的 Java 面试（2）</h2>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-20T20:20:56+08:00">
+                2018-01-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/20/为妹子准备的-Java-面试（2）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/01/20/为妹子准备的-Java-面试（2）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h2 id="开场白"><a href="#开场白" class="headerlink" title="开场白"></a>开场白</h2><ul>
+<li>参与人：啥都不知道 Amy Xia </li>
+<li>参考书籍：数据结构（用面向对象方法与C++语言描述）</li>
+<li>其他参考资料：网上“冲浪”搜寻来的博客</li>
+<li>本篇目标：希望啥都不懂的 Amy Xia 根据问题自我学习自己筛选，希望以找到答案为目的的快速查阅</li>
+</ul>
+<h2 id="自问自答"><a href="#自问自答" class="headerlink" title="自问自答"></a>自问自答</h2><h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><h4 id="顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。"><a href="#顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。" class="headerlink" title="顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。"></a>顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。</h4>
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据结构/" rel="tag"># 数据结构</a>
+          
+            <a href="/tags/面试/" rel="tag"># 面试</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/13/为妹子准备的-Java-面试（1）/" rel="next" title="为妹子准备的 Java 面试（1）">
+                <i class="fa fa-chevron-left"></i> 为妹子准备的 Java 面试（1）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -323,8 +447,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -401,6 +534,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#开场白"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x5F00;&#x573A;&#x767D;" class="headerlink" title="&#x5F00;&#x573A;&#x767D;"></a>&#x5F00;&#x573A;&#x767D;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自问自答"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x81EA;&#x95EE;&#x81EA;&#x7B54;" class="headerlink" title="&#x81EA;&#x95EE;&#x81EA;&#x7B54;"></a>&#x81EA;&#x95EE;&#x81EA;&#x7B54;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#链表"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x94FE;&#x8868;" class="headerlink" title="&#x94FE;&#x8868;"></a>&#x94FE;&#x8868;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#顺序表、单链表、循环链表和双向链表的结构、增删改查的方式和特点。"><span class="nav-number">2.1.1.</span> <span class="nav-text"><a href="#&#x987A;&#x5E8F;&#x8868;&#x3001;&#x5355;&#x94FE;&#x8868;&#x3001;&#x5FAA;&#x73AF;&#x94FE;&#x8868;&#x548C;&#x53CC;&#x5411;&#x94FE;&#x8868;&#x7684;&#x7ED3;&#x6784;&#x3001;&#x589E;&#x5220;&#x6539;&#x67E5;&#x7684;&#x65B9;&#x5F0F;&#x548C;&#x7279;&#x70B9;&#x3002;" class="headerlink" title="&#x987A;&#x5E8F;&#x8868;&#x3001;&#x5355;&#x94FE;&#x8868;&#x3001;&#x5FAA;&#x73AF;&#x94FE;&#x8868;&#x548C;&#x53CC;&#x5411;&#x94FE;&#x8868;&#x7684;&#x7ED3;&#x6784;&#x3001;&#x589E;&#x5220;&#x6539;&#x67E5;&#x7684;&#x65B9;&#x5F0F;&#x548C;&#x7279;&#x70B9;&#x3002;"></a>&#x987A;&#x5E8F;&#x8868;&#x3001;&#x5355;&#x94FE;&#x8868;&#x3001;&#x5FAA;&#x73AF;&#x94FE;&#x8868;&#x548C;&#x53CC;&#x5411;&#x94FE;&#x8868;&#x7684;&#x7ED3;&#x6784;&#x3001;&#x589E;&#x5220;&#x6539;&#x67E5;&#x7684;&#x65B9;&#x5F0F;&#x548C;&#x7279;&#x70B9;&#x3002;</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -549,9 +698,9 @@
     
       <script type="text/javascript">
         var disqus_config = function () {
-          this.page.url = 'http://superhx.github.io/ForkJoinPool-探索.html';
-          this.page.identifier = 'ForkJoinPool-探索.html';
-          this.page.title = 'ForkJoinPool 探索';
+          this.page.url = 'http://superhx.github.io/2018/01/20/为妹子准备的-Java-面试（2）/';
+          this.page.identifier = '2018/01/20/为妹子准备的-Java-面试（2）/';
+          this.page.title = '为妹子准备的 Java 面试（2）';
         };
         var d = document, s = d.createElement('script');
         s.src = 'https://blogrobinhan.disqus.com/embed.js';

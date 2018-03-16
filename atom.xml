@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>猿妙不可言</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://superhx.github.io/"/>
+  <updated>2018-03-12T10:49:29.897Z</updated>
+  <id>http://superhx.github.io/</id>
+  
+  <author>
+    <name>Robin Han</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>为妹子准备的 Java 面试（2）</title>
+    <link href="http://superhx.github.io/2018/01/20/%E4%B8%BA%E5%A6%B9%E5%AD%90%E5%87%86%E5%A4%87%E7%9A%84-Java-%E9%9D%A2%E8%AF%95%EF%BC%882%EF%BC%89/"/>
+    <id>http://superhx.github.io/2018/01/20/为妹子准备的-Java-面试（2）/</id>
+    <published>2018-01-20T12:20:56.000Z</published>
+    <updated>2018-03-12T10:49:29.897Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;开场白&quot;&gt;&lt;a href=&quot;#开场白&quot; class=&quot;headerlink&quot; title=&quot;开场白&quot;&gt;&lt;/a&gt;开场白&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;参与人：啥都不知道 Amy Xia
+        
+      
+    
+    </summary>
+    
+    
+      <category term="数据结构" scheme="http://superhx.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+      <category term="面试" scheme="http://superhx.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>为妹子准备的 Java 面试（1）</title>
+    <link href="http://superhx.github.io/2018/01/13/%E4%B8%BA%E5%A6%B9%E5%AD%90%E5%87%86%E5%A4%87%E7%9A%84-Java-%E9%9D%A2%E8%AF%95%EF%BC%881%EF%BC%89/"/>
+    <id>http://superhx.github.io/2018/01/13/为妹子准备的-Java-面试（1）/</id>
+    <published>2018-01-13T07:37:09.000Z</published>
+    <updated>2018-03-12T09:23:25.301Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;正所谓磨刀不误砍柴工，基础打好了，其他的进阶才不至于被一叶障目。个人觉得 Java 基础由：基础语法、常用类库、网络编程、并发编程和
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Java" scheme="http://superhx.github.io/tags/Java/"/>
+    
+      <category term="面试" scheme="http://superhx.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>流量控制</title>
+    <link href="http://superhx.github.io/2018/01/08/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6/"/>
+    <id>http://superhx.github.io/2018/01/08/流量控制/</id>
+    <published>2018-01-08T08:55:41.000Z</published>
+    <updated>2018-01-10T03:38:32.885Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;背景&quot;&gt;&lt;a href=&quot;#背景&quot; class=&quot;headerlink&quot; title=&quot;背景&quot;&gt;&lt;/a&gt;背景&lt;/h2&gt;&lt;p&gt;无论是整个系统，还是系统的各个模块，都有自己的负载承受能力。最直观的从系统层面来说，我们往往会提到这个系统能够承载的 TPS 是多少，这个
+        
+      
+    
+    </summary>
+    
+    
+      <category term="Access Control" scheme="http://superhx.github.io/tags/Access-Control/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java Concurrency [2]</title>
+    <link href="http://superhx.github.io/2016/09/01/Java-Concurrency-2/"/>
+    <id>http://superhx.github.io/2016/09/01/Java-Concurrency-2/</id>
+    <published>2016-09-01T08:46:14.000Z</published>
+    <updated>2017-12-14T11:54:13.007Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;PREFACE&quot;&gt;&lt;a href=&quot;#PREFACE&quot; class=&quot;headerlink&quot; title=&quot;PREFACE&quot;&gt;&lt;/a&gt;PREFACE&lt;/h2&gt;&lt;p&gt;第一部分讲述了Java
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://superhx.github.io/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://superhx.github.io/tags/Java/"/>
+    
+      <category term="Concurrency" scheme="http://superhx.github.io/tags/Concurrency/"/>
+    
+      <category term="Note" scheme="http://superhx.github.io/tags/Note/"/>
+    
+      <category term="Library" scheme="http://superhx.github.io/tags/Library/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java Initialization Order</title>
+    <link href="http://superhx.github.io/2016/04/01/Java-Initialization-Order/"/>
+    <id>http://superhx.github.io/2016/04/01/Java-Initialization-Order/</id>
+    <published>2016-04-01T06:23:22.000Z</published>
+    <updated>2017-12-14T11:54:50.084Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;Code&quot;&gt;&lt;a href=&quot;#Code&quot; class=&quot;headerlink&quot; title=&quot;Code&quot;&gt;&lt;/a&gt;Code&lt;/h2&gt;&lt;figure class=&quot;highlight java&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://superhx.github.io/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://superhx.github.io/tags/Java/"/>
+    
+      <category term="Basic" scheme="http://superhx.github.io/tags/Basic/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Java Concurrency [1]</title>
+    <link href="http://superhx.github.io/2015/08/06/Java-Concurrency-1/"/>
+    <id>http://superhx.github.io/2015/08/06/Java-Concurrency-1/</id>
+    <published>2015-08-06T06:26:11.000Z</published>
+    <updated>2017-12-14T11:54:00.492Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;h2 id=&quot;PREFACE&quot;&gt;&lt;a href=&quot;#PREFACE&quot; class=&quot;headerlink&quot; title=&quot;PREFACE&quot;&gt;&lt;/a&gt;PREFACE&lt;/h2&gt;&lt;p&gt;这是Java concurrency in
+        
+      
+    
+    </summary>
+    
+      <category term="Java" scheme="http://superhx.github.io/categories/Java/"/>
+    
+    
+      <category term="Java" scheme="http://superhx.github.io/tags/Java/"/>
+    
+      <category term="Concurrency" scheme="http://superhx.github.io/tags/Concurrency/"/>
+    
+      <category term="Note" scheme="http://superhx.github.io/tags/Note/"/>
+    
+      <category term="Fundamentals" scheme="http://superhx.github.io/tags/Fundamentals/"/>
+    
+  </entry>
+  
+</feed>
