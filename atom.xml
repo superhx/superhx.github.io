@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://superhx.github.io/"/>
-  <updated>2018-06-03T03:28:29.881Z</updated>
+  <updated>2018-07-29T14:13:24.294Z</updated>
   <id>http://superhx.github.io/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>避免装箱拆箱</title>
+    <link href="http://superhx.github.io/2018/07/29/%E9%81%BF%E5%85%8D%E8%A3%85%E7%AE%B1%E6%8B%86%E7%AE%B1/"/>
+    <id>http://superhx.github.io/2018/07/29/避免装箱拆箱/</id>
+    <published>2018-07-29T14:05:31.000Z</published>
+    <updated>2018-07-29T14:13:24.294Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;Java自带Collection、Guava等类库，提供了便捷的Set、Map、List等常用数据结构。在日常开发中，这些数据结构已经满足我们的需求。这些数据结构是基于泛型实现的，提供了一个“架子”，用户可以自行设定里面的具体类型。但涉及到原始类型Primitive
+        
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>为妹子准备的 Java 面试（2）</title>
@@ -37,9 +59,9 @@
     </summary>
     
     
-      <category term="面试" scheme="http://superhx.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
-    
       <category term="数据结构" scheme="http://superhx.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+      <category term="面试" scheme="http://superhx.github.io/tags/%E9%9D%A2%E8%AF%95/"/>
     
   </entry>
   

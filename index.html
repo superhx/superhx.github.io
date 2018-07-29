@@ -260,6 +260,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/07/29/避免装箱拆箱/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Robin Han">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿妙不可言">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/避免装箱拆箱/" itemprop="url">避免装箱拆箱</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-07-29T22:05:31+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/29/避免装箱拆箱/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/07/29/避免装箱拆箱/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Java自带Collection、Guava等类库，提供了便捷的Set、Map、List等常用数据结构。在日常开发中，这些数据结构已经满足我们的需求。这些数据结构是基于泛型实现的，提供了一个“架子”，用户可以自行设定里面的具体类型。但涉及到原始类型Primitive types（long、int、double…）作为数据结构中的元素时，因为Java泛型的限制，对这些数据结构的操作会带来很多“不必要的”原始类型的装箱和拆箱。<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Long, Long&gt; map = ...</span><br><span class="line">map.put(1L);</span><br><span class="line">long value = map.get(1L);</span><br></pre></td></tr></table></figure>
+<p>相当于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Map&lt;Long, Long&gt; map = ...</span><br><span class="line">map.put(new Long(1L));</span><br><span class="line">long value = map.get(new Long(1L)).longValue();</span><br></pre></td></tr></table></figure>
+<p>为了这些问题，出现了很多支持原生类型的集合类库例如<a href="http://trove.starlight-systems.com/" target="_blank" rel="noopener">Trove</a>、<a href="https://github.com/eclipse/eclipse-collections" target="_blank" rel="noopener">Eclipse Collections</a>、<a href="https://github.com/leventov/Koloboke" target="_blank" rel="noopener">koloboke</a>、<a href="http://fastutil.di.unimi.it/" target="_blank" rel="noopener">fastutil</a>和<a href="https://github.com/real-logic/Agrona" target="_blank" rel="noopener">argona</a>。</p>
+<blockquote>
+<p>具体的性能测试对比参见 <a href="https://github.com/austinv11/Long-Map-Benchmarks" target="_blank" rel="noopener">https://github.com/austinv11/Long-Map-Benchmarks</a></p>
+</blockquote>
+<p>从性能测试上来看Koloboke综合表现最好。但介于Koloboke在2016年后停滞在了1.0.0版本，用在生产环境还是有点虚的。论稳定性和功能的完整性，Eclipse Collections更胜一筹。</p>
+<h2 id="Koloboke"><a href="#Koloboke" class="headerlink" title="Koloboke"></a>Koloboke</h2><p>下面通过long-long map来初窥一下Koloboke。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p><code>HashLongLongMap</code>除了实现<code>java.util.Map&lt;Long, Long&gt;</code>的所有接口以外，还提供了<code>long get(long key)</code>和<code>long put(long key, long value)</code>等支持原生类型操作的接口。让我们可以以较低的改造成本将HashMap换成Koloboke的对应实现。</p>
+<p>注意：</p>
+<ul>
+<li>不支持<code>null</code> key、<code>null</code> value。</li>
+<li>不支持多线程，但是是fail fast的。</li>
+<li>不支持<code>Cloneable</code>、<code>Serializable</code>。</li>
+<li>不能保证维持多于250,000,000个元素。当大小超过限制时，会抛出<code>HashOverflowException</code>。</li>
+</ul>
+<h3 id="选择"><a href="#选择" class="headerlink" title="选择"></a>选择</h3><p>koloboke实现类库需要针对每种原始类型编写相应的实现，因此类库包会比较大（19MB）（但是方便呀）。koloboke除了提供实现类库以外，还提供了<a href="https://koloboke.com/compile" target="_blank" rel="noopener">Compile</a>，用户可以根据自己的需要生成所需的类。除了按需生成，Compile生成的实现在某些特殊场景上还比koloboke实现类库快5%。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p><code>HashLongLongMap</code>的实现类使用的实现方式和Java里面的<code>HashMap</code>不同，在解决Hash冲突时，使用的是开放地址法。如下图所示，它的key和value紧密相连。key存在偶数位，value存在相邻的奇数位。</p>
+<img src="/2018/07/29/避免装箱拆箱/arrange.png" title="排布">
+<p>优点：</p>
+<ul>
+<li>当Hash冲突时，不需要拉链，减少在添加和删除元素时的拉链的Node创建和销毁。</li>
+<li>key和value在内存上紧密相连，（臆想）在同一缓存行，数据存取会比较快。</li>
+<li>存储使用long[]数组，并提供原生类型操作接口，避免不必要的装箱拆箱。<br>缺点：</li>
+<li>当Hash冲突时，需要另外寻找位点，插入和查询性能会降低。（其实这对于拉链法也是一样的，Hash冲突，需要拉链，查询性能会降低）。</li>
+</ul>
+<p>查找、插入和删除操作首先是找到key所在的位点index。index的计算方式是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(mask(key)) &amp; (capacityMask = (tab.length) - 2)</span><br></pre></td></tr></table></figure>
+<p>当index所在位置没有数据，即没有冲突时，就可以将<code>tab[index] = key; tab[index + 1] = value;</code>。如果冲突就设置<code>index = (index - 2) &amp; capacityMask</code>。</p>
+<p>那么问题来了怎么判断是否有冲突呢？存入的key是啥都有可能呐，又不能设置为<code>null</code>表示没有设置过值。为了解决这个问题，这里很鸡贼的引入了一个freeValue的概念。正如freeValue这个名字，freeValue就是不存在Map的keys里面的一个自由自在的long值。</p>
+<p>那么问题又来了，万一我插入的key的值和freeValue相等呢？那我能怎么办，只能换一个不存在的freeValue值咯。（并且把数组里面原来的老的freeValue换成新的freeValue）。</p>
+<p>增和查知道了，那删就是直接把key所在的index设为freeValue，标记为没有数据就行了吧（<strong>并不</strong>）。之前其他的数据因为冲突可能找了好几次才找到空位。这里直接设置为freeValue，那这个位点前面的数据可能就找不到了。所以需要根据情况进行相应的数据移动。如下图所示，KEY2因为KEY1已经占据，所以到前面找了个位置。当KEY1删掉后，KEY2也要进行相应的移动，移动到KEY1的位置。</p>
+<img src="/2018/07/29/避免装箱拆箱/delete.png" title="删除流程">
+<p>删除移动的逻辑（简化版）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">indexToRemove = indexToShift = index</span><br><span class="line">while (true) &#123;</span><br><span class="line">    indexToShift -= 2</span><br><span class="line">    if (indexShift对应的key == freeValue) &#123;</span><br><span class="line">        break</span><br><span class="line">    &#125; else if (indexShift对应的数据可以移动到indexToRemove所在位置)&#123;</span><br><span class="line">        移动数据</span><br><span class="line">        indexToRmove = indexToShift</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Eclipse-Collections"><a href="#Eclipse-Collections" class="headerlink" title="Eclipse Collections"></a>Eclipse Collections</h2><blockquote>
+<p>现有的原生类型类可能会出现OOM的BUG，详见 <a href="https://github.com/eclipse/eclipse-collections/pull/552" target="_blank" rel="noopener">ISSUE</a> 。预计在<span data-type="color" style="color:rgb(36, 41, 46)"><span data-type="background" style="background-color:rgb(255, 255, 255)"> </span></span>10.0 milestone version修复</p>
+</blockquote>
+<h3 id="使用-1"><a href="#使用-1" class="headerlink" title="使用"></a>使用</h3><p><code>LongLongHashMap</code>只提供了操作原生类型的接口，没有实现<code>java.util.Map&lt;Long, Long&gt;</code>，在改造的时候可能工作量较大。</p>
+<h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p>Eclipse Collections的<code>LongLongHashMap</code>与前者的数据存储格式类似，都是KEY、VALUE紧密相邻存在一个数组中。不同的是它分别用key=0和key=1来表示空单元和被删除的单元。查找和插入的逻辑和Koloboke的<code>HashLongLongMap</code>类似，先找index，key冲突的话就去下一个位置找，匹配后key的index+1就是value存储的位置。</p>
+<p>那么问题来了，那我要插入的数据的key为0或1怎么办（问题咋这么多）？<code>LongLongHashMap</code>使用了两个哨兵对象(sentinel object)来存储当key为0或1的值。查找、插入和删除都对这两个哨兵对象操作。</p>
+<p>删除逻辑相对与Koloboke就简单很多，因为被删除的单元的key用1来表示，不需要在删除单元后移动其他的单元。只需要将被删除单元的key设置为1、value设置为0。</p>
+<p>扩展阅读：</p>
+<ul>
+<li><a href="http://www.infoq.com/cn/articles/eclipse-collections" target="_blank" rel="noopener">Eclipse Collections随Java版本的演变</a></li>
+</ul>
+<h2 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h2><p>测试程序</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@State</span>(Scope.Benchmark)</span><br><span class="line"><span class="comment">//@Fork(value = 1, jvmArgsAppend = "-Xmx 64m -Xms 64m -XX:+PrintGCDetails")</span></span><br><span class="line"><span class="meta">@Fork</span>(value = <span class="number">1</span>)</span><br><span class="line"><span class="meta">@Warmup</span>(iterations = <span class="number">1</span>)</span><br><span class="line"><span class="meta">@Measurement</span>(iterations = <span class="number">1</span>)</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PutDeleteTest</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>                      SIZE          = <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> MutableLongObjectMap&lt;TestValueObject&gt; eclipseLOMap  = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> MutableLongLongMap                    eclipseLLMap  = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> LongObjMap                            kolobokeLOMap = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> LongLongMap                           kolobokeLLMap = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;Long, TestValueObject&gt;            jLOmap        = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> Map&lt;Long, Long&gt;                       jLLmap        = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">long</span>                                  putIndex      = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    ...</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Benchmark</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">kolobokeLongLongMapTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (kolobokeLLMap == <span class="keyword">null</span>) &#123;</span><br><span class="line">            kolobokeLLMap = HashLongLongMaps.newMutableMap(<span class="number">2048</span>);</span><br><span class="line">            <span class="keyword">for</span> (; putIndex &lt; SIZE; putIndex++) &#123;</span><br><span class="line">                kolobokeLLMap.put(putIndex, putIndex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        kolobokeLLMap.put(putIndex, putIndex);</span><br><span class="line">        kolobokeLLMap.remove(putIndex - SIZE);</span><br><span class="line">        putIndex++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Benchmark</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eclipseHashLongLongMapTest</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (eclipseLLMap == <span class="keyword">null</span>) &#123;</span><br><span class="line">            eclipseLLMap = <span class="keyword">new</span> LongLongHashMap();</span><br><span class="line">            <span class="keyword">for</span> (; putIndex &lt; SIZE; putIndex++) &#123;</span><br><span class="line">                eclipseLLMap.put(putIndex, putIndex);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        eclipseLLMap.put(putIndex, putIndex);</span><br><span class="line">        eclipseLLMap.remove(putIndex - SIZE);</span><br><span class="line">        putIndex++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String... args)</span> <span class="keyword">throws</span> RunnerException </span>&#123;</span><br><span class="line">        Options opt = <span class="keyword">new</span> OptionsBuilder().include(PutDeleteTest.class.getSimpleName()).addProfiler(GCProfiler.class)</span><br><span class="line">            .jvmArgsAppend(<span class="string">"-Xms4g"</span>, <span class="string">"-Xmx4g"</span>, <span class="string">"-XX:+PrintGCDetails"</span>).build();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">new</span> Runner(opt).run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">PutDeleteTest.concurrentHashLongLongMapTest                                     thrpt    5  25222540.523 ±  2219795.461   ops/s</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.alloc.rate                      thrpt    5      2213.704 ±      194.760  MB/sec</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.alloc.rate.norm                 thrpt    5        96.659 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.churn.PS_Eden_Space             thrpt    5      2202.213 ±      361.536  MB/sec</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.churn.PS_Eden_Space.norm        thrpt    5        96.132 ±        9.404    B/op</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.churn.PS_Survivor_Space         thrpt    5         0.014 ±        0.023  MB/sec</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.churn.PS_Survivor_Space.norm    thrpt    5         0.001 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.count                           thrpt    5        85.000                 counts</span><br><span class="line">PutDeleteTest.concurrentHashLongLongMapTest:·gc.time                            thrpt    5        55.000                     ms</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest                                   thrpt    5  24952212.914 ±  1230098.599   ops/s</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.alloc.rate                    thrpt    5      2189.621 ±      107.990  MB/sec</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.alloc.rate.norm               thrpt    5        96.659 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.churn.PS_Eden_Space           thrpt    5      2201.926 ±      330.942  MB/sec</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.churn.PS_Eden_Space.norm      thrpt    5        97.186 ±       11.418    B/op</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.churn.PS_Survivor_Space       thrpt    5         0.017 ±        0.022  MB/sec</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.churn.PS_Survivor_Space.norm  thrpt    5         0.001 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.count                         thrpt    5        85.000                 counts</span><br><span class="line">PutDeleteTest.concurrentHashLongObjectMapTest:·gc.time                          thrpt    5        50.000                     ms</span><br><span class="line">PutDeleteTest.hashLongLongMapTest                                               thrpt    5  42870761.215 ± 18706977.204   ops/s</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.alloc.rate                                thrpt    5      4048.116 ±     1765.868  MB/sec</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.alloc.rate.norm                           thrpt    5       104.000 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.churn.PS_Eden_Space                       thrpt    5      4050.324 ±     1778.662  MB/sec</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.churn.PS_Eden_Space.norm                  thrpt    5       104.050 ±        5.407    B/op</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.churn.PS_Survivor_Space                   thrpt    5         0.027 ±        0.036  MB/sec</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.churn.PS_Survivor_Space.norm              thrpt    5         0.001 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.count                                     thrpt    5       156.000                 counts</span><br><span class="line">PutDeleteTest.hashLongLongMapTest:·gc.time                                      thrpt    5        87.000                     ms</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest                                             thrpt    5  44863139.823 ± 16865234.866   ops/s</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.alloc.rate                              thrpt    5      4236.239 ±     1592.934  MB/sec</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.alloc.rate.norm                         thrpt    5       104.000 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.churn.PS_Eden_Space                     thrpt    5      4232.196 ±     1681.207  MB/sec</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.churn.PS_Eden_Space.norm                thrpt    5       103.853 ±        6.346    B/op</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.churn.PS_Survivor_Space                 thrpt    5         0.027 ±        0.026  MB/sec</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.churn.PS_Survivor_Space.norm            thrpt    5         0.001 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.count                                   thrpt    5       163.000                 counts</span><br><span class="line">PutDeleteTest.hashLongObjectMapTest:·gc.time                                    thrpt    5        97.000                     ms</span><br><span class="line">PutDeleteTest.kolobokeLongLongMapTest                                           thrpt    5  43996155.514 ±  7379424.883   ops/s</span><br><span class="line">PutDeleteTest.kolobokeLongLongMapTest:·gc.alloc.rate                            thrpt    5        ≈ 10⁻⁴                 MB/sec</span><br><span class="line">PutDeleteTest.kolobokeLongLongMapTest:·gc.alloc.rate.norm                       thrpt    5        ≈ 10⁻⁶                   B/op</span><br><span class="line">PutDeleteTest.kolobokeLongLongMapTest:·gc.count                                 thrpt    5           ≈ 0                 counts</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest                                         thrpt    5  42801168.145 ±  3999300.909   ops/s</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.alloc.rate                          thrpt    5       932.827 ±       87.300  MB/sec</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.alloc.rate.norm                     thrpt    5        24.000 ±        0.001    B/op</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.churn.PS_Eden_Space                 thrpt    5       932.455 ±      222.476  MB/sec</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.churn.PS_Eden_Space.norm            thrpt    5        24.001 ±        6.043    B/op</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.churn.PS_Survivor_Space             thrpt    5         0.007 ±        0.015  MB/sec</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.churn.PS_Survivor_Space.norm        thrpt    5        ≈ 10⁻⁴                   B/op</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.count                               thrpt    5        36.000                 counts</span><br><span class="line">PutDeleteTest.kolobokeLongObjectMapTest:·gc.time                                thrpt    5        20.000                     ms</span><br></pre></td></tr></table></figure>
+<p>更为详细的测试，分析，待续。。。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/01/20/为妹子准备的-Java-面试（2）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1499,7 +1681,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
