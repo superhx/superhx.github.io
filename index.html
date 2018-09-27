@@ -260,6 +260,199 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/09/27/patch-map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Robin Han">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="猿妙不可言">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/27/patch-map/" itemprop="url">【瞎想系列】增量Map</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-09-27T14:25:17+08:00">
+                2018-09-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/09/27/patch-map/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/09/27/patch-map/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="瞎想系列第一期-增量Map"><a href="#瞎想系列第一期-增量Map" class="headerlink" title="瞎想系列第一期 增量Map"></a>瞎想系列第一期 增量Map</h1><h2 id="这里有个需求"><a href="#这里有个需求" class="headerlink" title="这里有个需求"></a>这里有个需求</h2><p>将一个Map从Master同步到Slave</p>
+<ul>
+<li>最终达到一致就行</li>
+<li>value变动的频率 &gt;&gt; key增加的频率 &gt;&gt; key减少的频率</li>
+</ul>
+<h2 id="简单粗暴"><a href="#简单粗暴" class="headerlink" title="简单粗暴"></a>简单粗暴</h2><p>最直接的想法就是直接使用推模式和拉模式：</p>
+<ul>
+<li>推模式：Master的Map发生变化，就往各个Slave推送整个Map</li>
+<li>拉模式：Slave间隔向Master请求最新的Map数据</li>
+</ul>
+<p>这两种方式虽然简单粗暴易于实现，但每当Map有更新时，传输的是全量的Map的数据。在Map数据量小的时候尚可接受，但当Map数据量“大”、变动频繁和Slave数目过多时，就（大概）会对Master的带宽和负载造成巨大的压力。</p>
+<p>为了解决这个问题，首先想到的是全量同步变增量同步。既然Slave有老的Map了，那Slave只需要拿到一个不定Patch，将补丁打入老的Map，就可以生成新的Map。那么问题又转变成如何生成补丁和如何打入补丁。</p>
+<h2 id="伪“增量”Map"><a href="#伪“增量”Map" class="headerlink" title="伪“增量”Map"></a>伪“增量”Map</h2><p>为啥叫伪“增量”Map呢？呃，因为它的核心原理是Slave的key只增加和变更，不减少，然后通过其他补偿方案来删除key。</p>
+<h3 id="核心设计"><a href="#核心设计" class="headerlink" title="核心设计"></a>核心设计</h3><h4 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    mapVersion: long // map的版本</span><br><span class="line">    map: &#123;</span><br><span class="line">        key1: &#123;</span><br><span class="line">            keyVersion: long, // key的版本</span><br><span class="line">            value: Object // key对应的value</span><br><span class="line">        &#125;,</span><br><span class="line">        key2: &#123;</span><br><span class="line">            keyVersion: long,</span><br><span class="line">            value: Object</span><br><span class="line">        &#125;, ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="map的版本-mapVersion"><a href="#map的版本-mapVersion" class="headerlink" title="map的版本 mapVersion"></a>map的版本 mapVersion</h4><p>mapVersion需要满足以下规约：</p>
+<ul>
+<li>mapVersion在map发生变更时版本会增大</li>
+<li>mapVersion一定大于等于所有的keyVersion</li>
+</ul>
+<blockquote>
+<p>map发生变更：添加新的key；key的value变化</p>
+</blockquote>
+<h4 id="key的版本-keyVersion"><a href="#key的版本-keyVersion" class="headerlink" title="key的版本 keyVersion"></a>key的版本 keyVersion</h4><p>keyVersion需要满足以下规约：</p>
+<ul>
+<li>keyVersion在key对应的value发生变更时版本会增大</li>
+<li>keyVersion增大一定会比原来的mapVersion大</li>
+<li>新增key的版本设置和key发生变更的规则一致</li>
+</ul>
+<h4 id="mapVersion和keyVersion更新流程"><a href="#mapVersion和keyVersion更新流程" class="headerlink" title="mapVersion和keyVersion更新流程"></a>mapVersion和keyVersion更新流程</h4><p>先更新keyVersion再更新mapVersion。</p>
+<p>举个栗子</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    mapVersion: 2</span><br><span class="line">    map: &#123;</span><br><span class="line">        key1: &#123; keyVersion: 1, value: Object &#125;,</span><br><span class="line">        key2: &#123; keyVersion: 2, value: Object &#125;,</span><br><span class="line">        key3: &#123; keyVersion: 1, value: Object &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>map的key1和key2的value都发生了变化</li>
+<li>更新key1和key2大于原来的mapVersion，设置为3</li>
+<li>更新mapVersion为最大的keyVersion，设置为3</li>
+</ol>
+<h4 id="同步策略"><a href="#同步策略" class="headerlink" title="同步策略"></a>同步策略</h4><ol>
+<li>初次拉取设置mapVersion为空，Master返回全量map，Slave用全量map覆盖本地map</li>
+<li>Master map发生变更，广播带mapVersion的oneway请求到Slave</li>
+<li>Slave以本地map的mapVersion请求Master</li>
+<li>Master根据mapVersion生成补丁返回给Slave</li>
+</ol>
+<p>Slave定时以mapVersion为空请求Master，Master返回全量map，Slave用全量map覆盖本地map</p>
+<ul>
+<li>为了清除已删除的key</li>
+<li>防止广播没有收到</li>
+</ul>
+<h4 id="如何生成补丁"><a href="#如何生成补丁" class="headerlink" title="如何生成补丁"></a>如何生成补丁</h4><p>Slave请求的时候会带上Slave当前的mapVersion</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if slave.mapVersion == master.mapVersion</span><br><span class="line">    // 说明slave和master的map是一致的，无需变更</span><br><span class="line">	return noChangePatch</span><br><span class="line">else </span><br><span class="line">	patch = &#123; mapVersion: master.mapVersion, map: &#123;所有keyVersion比slave.mapVersion的项&#125; &#125;</span><br><span class="line">	return patch</span><br></pre></td></tr></table></figure>
+<h4 id="如何打入补丁"><a href="#如何打入补丁" class="headerlink" title="如何打入补丁"></a>如何打入补丁</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if patch.mapVersion &lt; slave.mapVersion</span><br><span class="line">	return</span><br><span class="line">for k, v in path.map</span><br><span class="line">	// 这里的比较是为了即使是一个大补丁，也可以各取所需，例如slave本来只需要4和5之间的patch，master却返</span><br><span class="line">	// 回了2和5之间的patch</span><br><span class="line">	if v.keyVersion &gt; slave.map.map[k].keyVersion</span><br><span class="line">		slave.map.map[k] = v</span><br></pre></td></tr></table></figure>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><h5 id="每次slave请求都要生成补丁？No！No！No！"><a href="#每次slave请求都要生成补丁？No！No！No！" class="headerlink" title="每次slave请求都要生成补丁？No！No！No！"></a>每次slave请求都要生成补丁？No！No！No！</h5><p>可以对补丁进行缓存。例如缓存分别和最新mapVersion相差1、4、16的补丁，请求补丁都返回大于等于版本差距的补丁，例如master.mapVersion - slave.mapVersion == 2，则返回补丁4。若相差超过16，就返回全量map。</p>
+<h2 id="真增量Map"><a href="#真增量Map" class="headerlink" title="真增量Map"></a>真增量Map</h2><p>如果key删除的还算比较频繁，而且我想相对即使的知道key被删掉了。呃，那伪增量Map可能就不那么适用了。这时候就要请出人民的好伙伴好同志奥义-无敌-旋风-真增量Map。</p>
+<p>真增量Map其实是对伪增量Map的一个改造，主要的不同点如下：</p>
+<ul>
+<li>map发生变更新增“key的删除”</li>
+<li>key被删除的时候在Master这不会真的删除，只是标记DELETED，且keyVersion的变更流程和key的value发生变更的流程一致</li>
+<li>打补丁的时候，Slave如果看到key标记为DELETED，则把key从map中移除</li>
+</ul>
+<p>加了DELETED标记就能解决key的删除，看起来这个方案很完美。</p>
+<p>那么问题来了，Master map的key都不真正删除了，那之后Master的map不会越来越来大么？因此需要某种策略来裁剪map，移除掉已经删除的key。</p>
+<p><strong>裁剪map核心思想</strong></p>
+<p>越早标记为DELETED的key，越早删除，删除后，设置minPullMapVersion为最大已删的deleted key.keyVersion + 1。</p>
+<p>如果slave拉取补丁的slave.mapVersion &lt; minPullMapVersion &amp;&amp; slave.mapVersion != master.mapVersion，则返回全量map，slave使用全量map覆盖本地map。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://superhx.github.io/2018/07/29/避免装箱拆箱/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1681,7 +1874,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -1703,7 +1896,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>

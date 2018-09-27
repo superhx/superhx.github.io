@@ -90,7 +90,7 @@
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://superhx.github.io/2018/07/29/避免装箱拆箱/arrange.png">
 <meta property="og:image" content="http://superhx.github.io/2018/07/29/避免装箱拆箱/delete.png">
-<meta property="og:updated_time" content="2018-07-29T14:13:24.294Z">
+<meta property="og:updated_time" content="2018-07-29T14:13:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="避免装箱拆箱">
 <meta name="twitter:description" content="Java自带Collection、Guava等类库，提供了便捷的Set、Map、List等常用数据结构。在日常开发中，这些数据结构已经满足我们的需求。这些数据结构是基于泛型实现的，提供了一个“架子”，用户可以自行设定里面的具体类型。但涉及到原始类型Primitive types（long、int、double…）作为数据结构中的元素时，因为Java泛型的限制，对这些数据结构的操作会带来很多“不必要">
@@ -430,6 +430,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2018/09/27/patch-map/" rel="prev" title="【瞎想系列】增量Map">
+                【瞎想系列】增量Map <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -512,7 +516,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -534,7 +538,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -584,7 +588,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Koloboke"><span class="nav-number">1.</span> <span class="nav-text"><a href="#Koloboke" class="headerlink" title="Koloboke"></a>Koloboke</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.1.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;" class="headerlink" title="&#x4F7F;&#x7528;"></a>&#x4F7F;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择"><span class="nav-number">1.2.</span> <span class="nav-text"><a href="#&#x9009;&#x62E9;" class="headerlink" title="&#x9009;&#x62E9;"></a>&#x9009;&#x62E9;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.3.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;" class="headerlink" title="&#x5B9E;&#x73B0;"></a>&#x5B9E;&#x73B0;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eclipse-Collections"><span class="nav-number">2.</span> <span class="nav-text"><a href="#Eclipse-Collections" class="headerlink" title="Eclipse Collections"></a>Eclipse Collections</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-1"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x4F7F;&#x7528;-1" class="headerlink" title="&#x4F7F;&#x7528;"></a>&#x4F7F;&#x7528;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现-1"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x5B9E;&#x73B0;-1" class="headerlink" title="&#x5B9E;&#x73B0;"></a>&#x5B9E;&#x73B0;</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能测试"><span class="nav-number">3.</span> <span class="nav-text"><a href="#&#x6027;&#x80FD;&#x6D4B;&#x8BD5;" class="headerlink" title="&#x6027;&#x80FD;&#x6D4B;&#x8BD5;"></a>&#x6027;&#x80FD;&#x6D4B;&#x8BD5;</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Koloboke"><span class="nav-number">1.</span> <span class="nav-text">Koloboke</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用"><span class="nav-number">1.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#选择"><span class="nav-number">1.2.</span> <span class="nav-text">选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现"><span class="nav-number">1.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Eclipse-Collections"><span class="nav-number">2.</span> <span class="nav-text">Eclipse Collections</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-1"><span class="nav-number">2.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现-1"><span class="nav-number">2.2.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#性能测试"><span class="nav-number">3.</span> <span class="nav-text">性能测试</span></a></li></ol></div>
             
 
           </div>

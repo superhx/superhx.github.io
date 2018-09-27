@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://superhx.github.io/2018/01/08/流量控制/sliding_window.png">
 <meta property="og:image" content="http://superhx.github.io/2018/01/08/流量控制/leaky_bucket.png">
 <meta property="og:image" content="http://superhx.github.io/2018/01/08/流量控制/token_bucket.png">
-<meta property="og:updated_time" content="2018-01-10T03:38:32.885Z">
+<meta property="og:updated_time" content="2018-01-10T03:38:32.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="流量控制">
 <meta name="twitter:description" content="背景无论是整个系统，还是系统的各个模块，都有自己的负载承受能力。最直观的从系统层面来说，我们往往会提到这个系统能够承载的 TPS 是多少，这个 TPS 也一般作为系统提供服务能力的体现。若 TPS 超过了系统能够承载的上限，系统就可能出现 SLA 不满足客户需求，甚至于即使之后 TPS 下降到低于 TPS上限，系统仍不能恢复正常的情况。因此对系统服务访问的限流是至关重要的，通过控制访问系统的 TP">
@@ -493,7 +493,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -515,7 +515,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">tags</span>
                 </a>
               </div>
@@ -565,7 +565,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text"><a href="#&#x80CC;&#x666F;" class="headerlink" title="&#x80CC;&#x666F;"></a>&#x80CC;&#x666F;</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法介绍"><span class="nav-number">2.</span> <span class="nav-text"><a href="#&#x7B97;&#x6CD5;&#x4ECB;&#x7ECD;" class="headerlink" title="&#x7B97;&#x6CD5;&#x4ECB;&#x7ECD;"></a>&#x7B97;&#x6CD5;&#x4ECB;&#x7ECD;</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#滑动窗口算法"><span class="nav-number">2.1.</span> <span class="nav-text"><a href="#&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x7B97;&#x6CD5;" class="headerlink" title="&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x7B97;&#x6CD5;"></a>&#x6ED1;&#x52A8;&#x7A97;&#x53E3;&#x7B97;&#x6CD5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏斗桶算法"><span class="nav-number">2.2.</span> <span class="nav-text"><a href="#&#x6F0F;&#x6597;&#x6876;&#x7B97;&#x6CD5;" class="headerlink" title="&#x6F0F;&#x6597;&#x6876;&#x7B97;&#x6CD5;"></a>&#x6F0F;&#x6597;&#x6876;&#x7B97;&#x6CD5;</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#度量器-Meter"><span class="nav-number">2.2.1.</span> <span class="nav-text"><a href="#&#x5EA6;&#x91CF;&#x5668;-Meter" class="headerlink" title="&#x5EA6;&#x91CF;&#x5668; Meter"></a>&#x5EA6;&#x91CF;&#x5668; Meter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#队列-Queue"><span class="nav-number">2.2.2.</span> <span class="nav-text"><a href="#&#x961F;&#x5217;-Queue" class="headerlink" title="&#x961F;&#x5217; Queue"></a>&#x961F;&#x5217; Queue</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#令牌桶算法"><span class="nav-number">2.3.</span> <span class="nav-text"><a href="#&#x4EE4;&#x724C;&#x6876;&#x7B97;&#x6CD5;" class="headerlink" title="&#x4EE4;&#x724C;&#x6876;&#x7B97;&#x6CD5;"></a>&#x4EE4;&#x724C;&#x6876;&#x7B97;&#x6CD5;</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他相关实现"><span class="nav-number">2.4.</span> <span class="nav-text"><a href="#&#x5176;&#x4ED6;&#x76F8;&#x5173;&#x5B9E;&#x73B0;" class="headerlink" title="&#x5176;&#x4ED6;&#x76F8;&#x5173;&#x5B9E;&#x73B0;"></a>&#x5176;&#x4ED6;&#x76F8;&#x5173;&#x5B9E;&#x73B0;</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#算法介绍"><span class="nav-number">2.</span> <span class="nav-text">算法介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#滑动窗口算法"><span class="nav-number">2.1.</span> <span class="nav-text">滑动窗口算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#漏斗桶算法"><span class="nav-number">2.2.</span> <span class="nav-text">漏斗桶算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#度量器-Meter"><span class="nav-number">2.2.1.</span> <span class="nav-text">度量器 Meter</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#队列-Queue"><span class="nav-number">2.2.2.</span> <span class="nav-text">队列 Queue</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#令牌桶算法"><span class="nav-number">2.3.</span> <span class="nav-text">令牌桶算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他相关实现"><span class="nav-number">2.4.</span> <span class="nav-text">其他相关实现</span></a></li></ol></li></ol></div>
             
 
           </div>
