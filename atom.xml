@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://superhx.github.io/"/>
-  <updated>2018-09-27T06:25:17.000Z</updated>
+  <updated>2018-10-21T15:09:18.000Z</updated>
   <id>http://superhx.github.io/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>chaos engineering 读书笔记</title>
+    <link href="http://superhx.github.io/2018/10/21/chaos-engineering/"/>
+    <id>http://superhx.github.io/2018/10/21/chaos-engineering/</id>
+    <published>2018-10-21T14:44:33.000Z</published>
+    <updated>2018-10-21T15:09:18.000Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          &lt;p&gt;本来是准备写读后感的，呃，介于水平和时间有限（偷懒），准备“暂时”先写一篇读书笔记来记录一下自己看《Chaos Engineering》觉得有意思和有感悟的地方吧。&lt;/p&gt;
+&lt;p&gt;在看《Chaos Engineering》这本书之前，就对Netflix的Chaos
+        
+      
+    
+    </summary>
+    
+    
+      <category term="瞎几把读" scheme="http://superhx.github.io/tags/%E7%9E%8E%E5%87%A0%E6%8A%8A%E8%AF%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>【瞎想系列】增量Map</title>
