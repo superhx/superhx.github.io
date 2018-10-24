@@ -279,7 +279,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/21/chaos-engineering/" itemprop="url">chaos engineering 读书笔记</a></h2>
+                <a class="post-title-link" href="/2018/10/21/chaos-engineering/" itemprop="url">Chaos Engineering 读书笔记</a></h2>
         
 
         <div class="post-meta">
@@ -344,6 +344,66 @@
           
             <p>本来是准备写读后感的，呃，介于水平和时间有限（偷懒），准备“暂时”先写一篇读书笔记来记录一下自己看《Chaos Engineering》觉得有意思和有感悟的地方吧。</p>
 <p>在看《Chaos Engineering》这本书之前，就对Netflix的Chaos Monkey有所耳闻。如Chaos Monkey的名字一下，Chaos Monkey负责在生产环境中进行捣乱，随意的关掉应用实例，来测试系统的健壮性。其实刚看到Chaos Monkey的时候，不由的想起测试中的Monkey Test。虽然两者不是同一个东西，但是觉得两者的核心相似：随机性、探索未知。随机性好理解，因为两者都有Monkey（滑稽）。那探索未知是啥呢？测试人员虽然在使用Chaos Monkey和Monkey Test，有对自己的系统行为有一定的预期，但并不像单元测试、集成测试之类这些测试一样，确切知道会发生什么。因为Chaos Monkey和Monkey Test具有随机性，测试人员希望利用随机性来发现未知的问题。</p>
+<p>呃，有点跑题。。。下面读书笔记zhai chao正式开始。</p>
+<h2 id="为什么需要Chaos-Engineering？"><a href="#为什么需要Chaos-Engineering？" class="headerlink" title="为什么需要Chaos Engineering？"></a>为什么需要Chaos Engineering？</h2><p>首先来看看Chaos Engineering的定义。定义是一种浓缩和总结，全书都是围绕这个定义来展开，感觉这个定义贼准确。建议看完这本书的同学可以回过头来好好品味下这句话。</p>
+<blockquote>
+<p>Chaos Engineering is an approach for learning about how your system behaves by appliying a discipline of empirical exploration.</p>
+</blockquote>
+<p>就像开头提到的Chaos Monkey，Chaos Engineering隐隐给人有一种测试的感觉。但是它又和传统的测试不同。传统的测试的目的更多的是测试程序的行为是否符合预期。而Chaos Engineering是一个通过实验发现“新”问题，然后解决问题的过程。一个是测试已知，一个是发现未知。</p>
+<blockquote>
+<p>In testing, an assertion is made: given specific conditions, a system will emit a specific output. Tests are typically binary, and determine whether a property is true or false. Strictly speaking, this does not generate new knowledge about the system, it just assigns valence to a known property of it. Experimentation generates <strong>new knowledge</strong>, and often suggests new avenues of exploration.</p>
+</blockquote>
+<p>而且测试通常只是针对一个子系统/程序，而在分布式的大环境下，是由很多微服务组成一个整体对外提供服务。有一些设计和错误恢复在单个子系统看来很合理，但是从整个系统上来看，就有可能引发灾难，例如请求重试导致的雪崩。还是因为系统复杂度的提高，有些问题可能是由好几个子系统共同处于某种状态导致的，单靠人是想不过来的（估计也想不出来），这时候就需要Chaos Engineering来帮我们提早发现问题，解决问题了。</p>
+<p>Chaos Engineering这么好，那是不是就可以直接走起了？（斜眼）首先得问问自己：</p>
+<blockquote>
+<p>Is your system resilient to real-world events such as service failures and network latency spikes?</p>
+</blockquote>
+<p>如果明明知道自己某个节点挂一下就GG斯密达，有问题不修，那上这个不是找死嘛。</p>
+<h2 id="Chaos-Engineering的原则"><a href="#Chaos-Engineering的原则" class="headerlink" title="Chaos Engineering的原则"></a>Chaos Engineering的原则</h2><p>好了好了，我知道Chaos Engineeing很好，那如果我想实践，那么它有哪些设计原则呢？</p>
+<p>…说好的这周完成，偷懒，偷懒，最后一天才开始写 2018.10.21</p>
+<h3 id="稳定状态的假定"><a href="#稳定状态的假定" class="headerlink" title="稳定状态的假定"></a>稳定状态的假定</h3><p>要知道一个系统的正确性，在某些条件下是否符合预期。首先我们得知道我们的预期是啥。怎么判断系统是否出于正常的状态（steady state）。都不知道系统什么算正常，怎么发现系统的异常呢。</p>
+<p>观测系统状态比较常见的做法是通过指标（metrics）。指标分为系统指标和业务指标两种。</p>
+<blockquote>
+<p>System metrics：CPU load, memory utilization, network I/O, and all kinds of timing information, such as how long it takes to service web requests, or how much time is spent in various database queries.</p>
+</blockquote>
+<blockquote>
+<p>It’s the business metrics that allow us to answer questions like:</p>
+<ul>
+<li>Are we losing customers?</li>
+<li>Are the customers able to perform critical site functions like checking out or adding to their cart on an e-commerce site?</li>
+<li>Are the customers experiencing so much latency that they will give up and stop using the service?</li>
+</ul>
+</blockquote>
+<p>两者本质上都是时序数据，只是角度的不同。</p>
+<p>指标的该配的配好了，那么问题又来了，我怎么知道指标是否是正常的。这是个难题，因为指标不像人的体温一样是一个相对问题的值。不要慌不要忙，数据建模帮你忙，虽然指标在一直变化，但是它有迹可循。</p>
+<blockquote>
+<p>It increases and decreases over time, but in a consistent way</p>
+</blockquote>
+<h3 id="Vary-Real-World-Events"><a href="#Vary-Real-World-Events" class="headerlink" title="Vary Real-World Events"></a>Vary Real-World Events</h3><p>只要时间够长，一切不可能都是可能。平时写代码也是一样，有些你觉得几乎不会发生，不会那么那么巧的事，到最后一定会发生。难道这就是墨菲定律！</p>
+<blockquote>
+<p>Every system, from simple to complex, is subject to unpredictable events and conditions if it runs long enough.</p>
+</blockquote>
+<p>现实生活中事件大概分如下几类：硬件故障、程序BUG、State transmission errors？、网络延迟、请求/输入大幅度波动和重试风暴、资源耗竭、Unusual or unpredictable combinations of interservice communication？、拜占庭将军问题（e.g. 一个节点自以为拥有最新的数据）、竞争和下游依赖故障。这些事件也许会同时发生，给你一记重拳。</p>
+<p>这些事件的模拟的成本和带来的收益不尽相同，需要根据情况来权衡。</p>
+<blockquote>
+<p>We don’t need to enumerate all of the possible events that can change the system, we just need to inject the frequent and impactful ones as well as understand the resulting failure domains.</p>
+</blockquote>
+<h3 id="在生产环境实验"><a href="#在生产环境实验" class="headerlink" title="在生产环境实验"></a>在生产环境实验</h3><p>先声明：在生产环境实验，并不是没有脑子的在生产环境搞破环。</p>
+<blockquote>
+<ul>
+<li>Make it easy to abort the experiment</li>
+<li>Minimize the blast radius of the experiment</li>
+</ul>
+</blockquote>
+<p>关于为什么要在生产环境实验？“越危险的地方，越能知道真理”</p>
+<blockquote>
+<p>We want to build confidence in the system in production, and to do that we need to explore the systemic effects there. Otherwise, we are just building confidence in a system other than the one we care about, which diminishes the value of the exercise.</p>
+</blockquote>
+<h3 id="自动化走起来"><a href="#自动化走起来" class="headerlink" title="自动化走起来"></a>自动化走起来</h3><p>不自动化，每一次实验都需要人去跟踪、观察和分析，那和“智能”运维脚本有什么区别。无时无刻不在自动的运行实验，确保系统的每次变更都经历了这些实验的“回归”，这才能增强我们对系统的信息嘛。</p>
+<blockquote>
+<p>If experimentation is not automated, it is obsolescent.</p>
+</blockquote>
+<h3 id="减小影响"><a href="#减小影响" class="headerlink" title="减小影响"></a>减小影响</h3><p>在生产环境实验，惊险又刺激。为了真的实验暴露出系统故障时的影响范围。实验要遵循两个原则：实验本身控制影响范围；当出现故障时，实验能够快速停止，及时止血。</p>
 
           
         
