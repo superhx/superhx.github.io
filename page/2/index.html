@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,Concurrency,Note,Fundamentals," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -81,18 +81,13 @@
 
 
 
-<meta name="description" content="PREFACE这是Java concurrency in practice的读书笔记和感♂悟。免得忘了又要去翻书，又要去翻书，又要去翻书。按书的章节大概分为五个部分吧！Fundamentals、Structuring Concurrent Application、Liveness、Performance and Testing、Advance Topic。。。虽然目前还并没有看完。其中混杂这一些不">
-<meta name="keywords" content="Java,Concurrency,Note,Fundamentals">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Java Concurrency [1]">
-<meta property="og:url" content="http://superhx.github.io/2015/08/06/Java-Concurrency-1/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="猿妙不可言">
+<meta property="og:url" content="http://superhx.github.io/page/2/index.html">
 <meta property="og:site_name" content="猿妙不可言">
-<meta property="og:description" content="PREFACE这是Java concurrency in practice的读书笔记和感♂悟。免得忘了又要去翻书，又要去翻书，又要去翻书。按书的章节大概分为五个部分吧！Fundamentals、Structuring Concurrent Application、Liveness、Performance and Testing、Advance Topic。。。虽然目前还并没有看完。其中混杂这一些不">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2017-12-14T11:54:00.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java Concurrency [1]">
-<meta name="twitter:description" content="PREFACE这是Java concurrency in practice的读书笔记和感♂悟。免得忘了又要去翻书，又要去翻书，又要去翻书。按书的章节大概分为五个部分吧！Fundamentals、Structuring Concurrent Application、Liveness、Performance and Testing、Advance Topic。。。虽然目前还并没有看完。其中混杂这一些不">
+<meta name="twitter:title" content="猿妙不可言">
 
 
 
@@ -122,13 +117,13 @@
 
 
 
-  <link rel="canonical" href="http://superhx.github.io/2015/08/06/Java-Concurrency-1/"/>
+  <link rel="canonical" href="http://superhx.github.io/page/2/"/>
 
 
 
 
 
-  <title>Java Concurrency [1] | 猿妙不可言</title>
+  <title>猿妙不可言</title>
   
 
 
@@ -156,7 +151,8 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -249,9 +245,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-expand">
     
+      
 
   
 
@@ -281,7 +277,9 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Java Concurrency [1]</h2>
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2015/08/06/Java-Concurrency-1/" itemprop="url">Java Concurrency [1]</a></h2>
         
 
         <div class="post-meta">
@@ -364,7 +362,9 @@
       
 
       
-        <h2 id="PREFACE"><a href="#PREFACE" class="headerlink" title="PREFACE"></a>PREFACE</h2><p>这是Java concurrency in practice的读书笔记和感♂悟。免得忘了又要去翻书，又要去翻书，又要去翻书。按书的章节大概分为五个部分吧！Fundamentals、Structuring Concurrent Application、Liveness、Performance and Testing、Advance Topic。。。虽然目前还并没有看完。其中混杂这一些不知从哪看来的东西。还有有些词汇感觉不好翻译的就直接用英文了，倒时候Google找资料知道英文关键字来找也方便。</p>
+        
+          
+            <h2 id="PREFACE"><a href="#PREFACE" class="headerlink" title="PREFACE"></a>PREFACE</h2><p>这是Java concurrency in practice的读书笔记和感♂悟。免得忘了又要去翻书，又要去翻书，又要去翻书。按书的章节大概分为五个部分吧！Fundamentals、Structuring Concurrent Application、Liveness、Performance and Testing、Advance Topic。。。虽然目前还并没有看完。其中混杂这一些不知从哪看来的东西。还有有些词汇感觉不好翻译的就直接用英文了，倒时候Google找资料知道英文关键字来找也方便。</p>
 <h2 id="ATOMICITY"><a href="#ATOMICITY" class="headerlink" title="ATOMICITY"></a>ATOMICITY</h2><p>操作的原子性类似于数据库中的原子性，即该操作是不可分割的。</p>
 <h3 id="Read-Modify-Write"><a href="#Read-Modify-Write" class="headerlink" title="Read-Modify-Write"></a>Read-Modify-Write</h3><p>可能初学者会认为单条语句往往是不可分割的是原子操作，其实并不是这样。比如<code>++count</code>，这是一种典型的读-修改-写的操作，是由三个分离的操作组成：读<code>count</code>的值，将读得的值<code>+1</code>，将结果写到<code>count</code>。如果不加以同步，在计数器程序的多线程中就可能出现，a、b线程读到<code>count</code>的值<code>x</code>，然后分别<code>+1</code>得到结果<code>x+1</code>,然后分别再将结果写入<code>count</code>，导致最终结果是<code>x+1</code>而不是<code>x+2</code>。</p>
 <p>解决：可以用<code>AtomicLong</code>为<code>count</code>的类型，执行<code>count.incrementAndGet()</code>实现<code>count</code>增加的操作。</p>
@@ -468,6 +468,8 @@
 </blockquote>
 <h3 id="Effectively-Immutable-object"><a href="#Effectively-Immutable-object" class="headerlink" title="Effectively Immutable object"></a>Effectively Immutable object</h3><p>在publish后状态不会被修改的对象，对象逻辑上保持不变</p>
 
+          
+        
       
     </div>
     
@@ -482,42 +484,14 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Java/" rel="tag"># Java</a>
-          
-            <a href="/tags/Concurrency/" rel="tag"># Concurrency</a>
-          
-            <a href="/tags/Note/" rel="tag"># Note</a>
-          
-            <a href="/tags/Fundamentals/" rel="tag"># Fundamentals</a>
-          
-        </div>
+
+      
+
       
 
       
       
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/04/01/Java-Initialization-Order/" rel="prev" title="Java Initialization Order">
-                Java Initialization Order <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
+        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -527,11 +501,14 @@
   </article>
 
 
+    
+  </section>
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>
@@ -539,17 +516,6 @@
 
 
           
-  
-    <div class="comments" id="comments">
-      <div id="disqus_thread">
-        <noscript>
-          Please enable JavaScript to view the
-          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
-        </noscript>
-      </div>
-    </div>
-  
-
 
         </div>
         
@@ -570,17 +536,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Table of Contents
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Overview
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -657,22 +614,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#PREFACE"><span class="nav-number">1.</span> <span class="nav-text">PREFACE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ATOMICITY"><span class="nav-number">2.</span> <span class="nav-text">ATOMICITY</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Read-Modify-Write"><span class="nav-number">2.1.</span> <span class="nav-text">Read-Modify-Write</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Check-Then-Act"><span class="nav-number">2.2.</span> <span class="nav-text">Check-Then-Act</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LOCKING"><span class="nav-number">3.</span> <span class="nav-text">LOCKING</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Intrinsic-Locks"><span class="nav-number">3.1.</span> <span class="nav-text">Intrinsic Locks</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VISIBILITY-amp-amp-HAPPENS-BEFORE-ORDER"><span class="nav-number">4.</span> <span class="nav-text">VISIBILITY &amp;&amp; HAPPENS-BEFORE ORDER</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SHARING-OBJECT-SAFELY"><span class="nav-number">5.</span> <span class="nav-text">SHARING OBJECT SAFELY</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Safe-Publication"><span class="nav-number">5.1.</span> <span class="nav-text">Safe Publication</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Thread-Confinement"><span class="nav-number">5.2.</span> <span class="nav-text">Thread Confinement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ad-hoc-Thread-Confinement"><span class="nav-number">5.3.</span> <span class="nav-text">Ad-hoc Thread Confinement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stack-Confinement"><span class="nav-number">5.4.</span> <span class="nav-text">Stack Confinement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadLocal"><span class="nav-number">5.5.</span> <span class="nav-text">ThreadLocal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Immutable-object"><span class="nav-number">5.6.</span> <span class="nav-text">Immutable object</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Effectively-Immutable-object"><span class="nav-number">5.7.</span> <span class="nav-text">Effectively Immutable object</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -797,10 +738,6 @@
   
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
-
-
 
   
 
@@ -818,18 +755,6 @@
       <script id="dsq-count-scr" src="https://blogrobinhan.disqus.com/count.js" async></script>
     
 
-    
-      <script type="text/javascript">
-        var disqus_config = function () {
-          this.page.url = 'http://superhx.github.io/2015/08/06/Java-Concurrency-1/';
-          this.page.identifier = '2015/08/06/Java-Concurrency-1/';
-          this.page.title = 'Java Concurrency [1]';
-        };
-        var d = document, s = d.createElement('script');
-        s.src = 'https://blogrobinhan.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', '' + +new Date());
-        (d.head || d.body).appendChild(s);
-      </script>
     
 
   
